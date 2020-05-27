@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Img2ColorfulChars", "Img2ColorfulChars\Img2ColorfulChars.csproj", "{D81C52AC-CA7A-4C10-BC4E-6508677619AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D81C52AC-CA7A-4C10-BC4E-6508677619AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D81C52AC-CA7A-4C10-BC4E-6508677619AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D81C52AC-CA7A-4C10-BC4E-6508677619AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D81C52AC-CA7A-4C10-BC4E-6508677619AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {023768DD-FD19-4DF5-98B7-D1688A2035B4}
+	EndGlobalSection
+EndGlobal
