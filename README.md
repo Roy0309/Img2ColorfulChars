@@ -17,3 +17,5 @@ Original image:
 Output:  
 <img width="400" height="400" src="Images/output.png"/>  
 
+## 思路总结/zh_CN
+- [来自多彩世界的控制台——C#控制台输出彩色字符 - 简书](https://www.jianshu.com/p/8a083421c11d)
