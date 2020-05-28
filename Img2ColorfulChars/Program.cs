@@ -11,11 +11,13 @@ namespace Img2ColorfulChars
         public static void Main(string[] args)
         {
             // Usage
-            if (args.Length == 0)
+            if (args.Length != 2)
             {
                 Console.WriteLine(
                     "\nImg2ColorfulChar usage:\n" +
-                    "    Img2ColorfulChar.exe example.jpg(Image path) 20([Int]Scale | Larger scale gets smaller image)\n" +
+                    "    Img2ColorfulChar.exe ImagePath Scale\n" +
+                    "    eg. Img2ColorfulChar.exe np.png 4\n" +
+                    "    Notice: [Scale] should be positive integar and larger scale gets smaller image.\n" + 
                     "Thanks~\n");
                 return;
             }
@@ -25,13 +27,15 @@ namespace Img2ColorfulChars
             if (!File.Exists(filename))
             {
                 Console.WriteLine("Failed: File not found.");
-                Environment.Exit(-1);
+                Environment.ExitCode = -1;
+                return;
             }
             bool validScale = int.TryParse(args[1], out int hScale);
             if (!validScale)
             {
                 Console.WriteLine("Failed: Scale should be positive integar.");
-                Environment.Exit(-2);
+                Environment.ExitCode = -2;
+                return;
             }
             int vScale = hScale * 2; // Good for console output
 
@@ -39,6 +43,9 @@ namespace Img2ColorfulChars
             var handle = NativeMethods.GetStdHandle(-11);
             NativeMethods.GetConsoleMode(handle, out int mode);
             NativeMethods.SetConsoleMode(handle, mode | 0x4);
+
+            // Save original color
+            var consoleColor = Console.ForegroundColor;
 
             // Draw image
             try
@@ -53,6 +60,9 @@ namespace Img2ColorfulChars
                 Console.WriteLine(e);
             }
 
+            // Recover color
+            Console.ForegroundColor = consoleColor;
+            Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey();
         }
 
