@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -19,6 +20,10 @@ namespace Img2ColorfulChars
             var handle = NativeMethods.GetStdHandle(-11); // STD_OUTPUT_HANDLE = -11
             NativeMethods.GetConsoleMode(handle, out int mode);
             NativeMethods.SetConsoleMode(handle, mode | 0x4); // ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x4
+            // Save original foreground color
+            var consoleColor = Console.ForegroundColor;
+            // Hide cursor
+            Console.CursorVisible = false;
 
             string filename;
             int hScale = 0;
@@ -29,7 +34,7 @@ namespace Img2ColorfulChars
                 {
                     CheckFileExists = true,
                     CheckPathExists = true,
-                    Filter = "Image(*.jpg;.jpeg;*.png;.bmp;.ico;.tiff)|*.jpg;.jpeg;*.png;.bmp;.ico;.tiff|All files(*.*)|*.*",
+                    Filter = "Image(*.jpg;*.jpeg;*.png;*.bmp;*.ico;*.tiff;*.gif)|*.jpg;*.jpeg;*.png;*.bmp;*.ico;*.tiff;*.gif|All files(*.*)|*.*",
                     Multiselect = false,
                     Title = "Select an image to process..."
                 };
@@ -73,15 +78,28 @@ namespace Img2ColorfulChars
             }
             int vScale = hScale * 2; // Good for console output
 
-            // Save original color
-            var consoleColor = Console.ForegroundColor;
-
             // Draw image
             try
             {
                 using (Bitmap bmp = new Bitmap(filename))
                 {
-                    GetChars(bmp, hScale, vScale, true);
+                    FrameDimension fd = new FrameDimension(bmp.FrameDimensionsList[0]);
+                    int frameCount = bmp.GetFrameCount(fd);
+                    // For GIF
+                    if (frameCount > 1)
+                    {
+                        int i = 0;
+                        while (i <= frameCount) // Loop playback
+                        {
+                            for (i = 0; i < frameCount; i++)
+                            {
+                                bmp.SelectActiveFrame(fd, i);
+                                GetChars(bmp, hScale, vScale, true);
+                            }
+                        }
+                    }
+                    // For other image formats
+                    else { GetChars(bmp, hScale, vScale, true); }
                 }
             }
             catch (Exception e)
@@ -91,12 +109,16 @@ namespace Img2ColorfulChars
 
             // Recover color
             Console.ForegroundColor = consoleColor;
+
             Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey();
         }
 
         private static string GetChars(Bitmap bmp, int hScale, int vScale, bool shouldDraw)
         {
+            // Refresh frame
+            Console.SetCursorPosition(0, 0);
+
             StringBuilder sb = new StringBuilder();
             for (int h = 0; h < bmp.Height; h += vScale)
             {
