@@ -63,7 +63,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(199, 30);
             this.label1.TabIndex = 2;
-            this.label1.Text = "1. Scale should be positive integar.\r\n2. Larger scale gets smaller image.";
+            this.label1.Text = "1. Scale should be positive integer.\r\n2. Larger scale gets smaller image.";
             // 
             // label2
             // 

@@ -72,7 +72,7 @@ namespace Img2ColorfulChars
                 bool validScale = int.TryParse(args[1], out hScale);
                 if (!validScale)
                 {
-                    Console.WriteLine("Failed: Scale should be positive integar.");
+                    Console.WriteLine("Failed: Scale should be positive integer.");
                     Environment.Exit(-2);
                 }     
             }
