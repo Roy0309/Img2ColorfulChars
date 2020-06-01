@@ -13,6 +13,12 @@ namespace Img2ColorfulChars
             InitializeComponent();
         }
 
+        public ScaleBox(int suggestedScale)
+        {
+            InitializeComponent();
+            tb_Scale.Text = suggestedScale.ToString();
+        }
+
         private void ScaleBox_Load(object sender, EventArgs e)
         {
             // Focus this window

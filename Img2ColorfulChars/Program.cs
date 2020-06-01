@@ -37,9 +37,18 @@ namespace Img2ColorfulChars
                 if (string.IsNullOrEmpty(ofd.FileName)) { return; }
                 filename = ofd.FileName;
 
+                // Provide suggested scale
+                int suggestedHScale = 1;
+                using (Bitmap bmp = new Bitmap(filename))
+                {
+                    int suggestedHScaleByWidth = (int)Math.Ceiling((double)bmp.Width / Console.WindowWidth);
+                    int suggestedHScaleByHeight = (int)Math.Ceiling((double)bmp.Height / Console.WindowHeight / 2);
+                    suggestedHScale = Math.Max(suggestedHScaleByWidth, suggestedHScaleByHeight);
+                }
+
                 // Set scale
                 Application.EnableVisualStyles();
-                ScaleBox sb = new ScaleBox();
+                ScaleBox sb = new ScaleBox(suggestedHScale);
                 Application.Run(sb);
                 if (sb.DialogResult != DialogResult.OK) { return; }
                 hScale = sb.HScale;
