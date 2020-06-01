@@ -1,48 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Img2ColorfulChars
 {
     internal class Program
     {
+        [STAThread]
         public static void Main(string[] args)
         {
-            // Usage
+            // Maximize console
+            NativeMethods.ShowWindow(Process.GetCurrentProcess().MainWindowHandle, 3); //SW_MAXIMIZE = 3
+            // Set flag for colorful output
+            var handle = NativeMethods.GetStdHandle(-11); // STD_OUTPUT_HANDLE = -11
+            NativeMethods.GetConsoleMode(handle, out int mode);
+            NativeMethods.SetConsoleMode(handle, mode | 0x4); // ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x4
+
+            string filename;
+            int hScale = 0;
             if (args.Length != 2)
             {
-                Console.WriteLine(
-                    "\nImg2ColorfulChar usage:\n" +
-                    "    Img2ColorfulChar.exe ImagePath Scale\n" +
-                    "    eg. Img2ColorfulChar.exe np.png 4\n" +
-                    "    Notice: [Scale] should be positive integar and larger scale gets smaller image.\n" + 
-                    "Thanks~\n");
-                return;
-            }
+                // Load image path
+                OpenFileDialog ofd = new OpenFileDialog
+                {
+                    CheckFileExists = true,
+                    CheckPathExists = true,
+                    Filter = "Image(*.jpg;.jpeg;*.png;.bmp;.ico;.tiff)|*.jpg;.jpeg;*.png;.bmp;.ico;.tiff|All files(*.*)|*.*",
+                    Multiselect = false,
+                    Title = "Select an image to process..."
+                };
+                ofd.ShowDialog();
+                if (string.IsNullOrEmpty(ofd.FileName)) { return; }
+                filename = ofd.FileName;
 
-            // Arguments
-            string filename = args[0];
-            if (!File.Exists(filename))
-            {
-                Console.WriteLine("Failed: File not found.");
-                Environment.ExitCode = -1;
-                return;
+                // Set scale
+                Application.EnableVisualStyles();
+                ScaleBox sb = new ScaleBox();
+                Application.Run(sb);
+                if (sb.DialogResult != DialogResult.OK) { return; }
+                hScale = sb.HScale;
             }
-            bool validScale = int.TryParse(args[1], out int hScale);
-            if (!validScale)
+            else // Input arguments
             {
-                Console.WriteLine("Failed: Scale should be positive integar.");
-                Environment.ExitCode = -2;
-                return;
+                // Load image path
+                filename = args[0];
+                if (!File.Exists(filename))
+                {
+                    Console.WriteLine("Failed: File not found.");
+                    Environment.Exit(-1);
+                }
+
+                // Set scale
+                bool validScale = int.TryParse(args[1], out hScale);
+                if (!validScale)
+                {
+                    Console.WriteLine("Failed: Scale should be positive integar.");
+                    Environment.Exit(-2);
+                }     
             }
             int vScale = hScale * 2; // Good for console output
-
-            // Set flag ENABLE_VIRTUAL_TERMINAL_PROCESSING(0x4) for colorful output
-            var handle = NativeMethods.GetStdHandle(-11);
-            NativeMethods.GetConsoleMode(handle, out int mode);
-            NativeMethods.SetConsoleMode(handle, mode | 0x4);
 
             // Save original color
             var consoleColor = Console.ForegroundColor;

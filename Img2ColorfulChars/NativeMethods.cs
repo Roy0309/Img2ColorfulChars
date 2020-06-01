@@ -16,5 +16,11 @@ namespace Img2ColorfulChars
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern IntPtr GetStdHandle(int handle);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool ShowWindow(IntPtr hWnd, int cmdShow);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern IntPtr SetForegroundWindow(IntPtr hWnd);
     }
 }
