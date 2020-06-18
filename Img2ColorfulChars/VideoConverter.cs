@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Img2ColorfulChars
@@ -34,7 +32,6 @@ namespace Img2ColorfulChars
         public int OriginalWidth { get; private set; }
         public int OriginalHeight { get; private set; }
         public string Duration { get; private set; }
-
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int Rate { get; private set; } = 8;
@@ -44,6 +41,8 @@ namespace Img2ColorfulChars
         private readonly bool toolExists = false;
         private const string pipeName = "I2CCVideoOutput";
         private bool pipeCreated = false;
+
+        private VideoConverter() { }
 
         public VideoConverter(string filename)
         {
@@ -61,6 +60,13 @@ namespace Img2ColorfulChars
         private bool CheckFFmpegExists()
         {
             return !string.IsNullOrEmpty(FFmpegPath) && File.Exists(FFmpegPath);
+        }
+
+        public int GetSuggestedHScale()
+        {
+            int suggestedHScaleByWidth = (int)Math.Ceiling((double)OriginalWidth / Console.WindowWidth);
+            int suggestedHScaleByHeight = (int)Math.Ceiling((double)OriginalHeight / Console.WindowHeight / 2);
+            return Math.Max(suggestedHScaleByWidth, suggestedHScaleByHeight);
         }
 
         public void SetScale(int scale)
