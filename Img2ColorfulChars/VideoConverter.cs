@@ -169,8 +169,7 @@ namespace Img2ColorfulChars
                 } 
 
                 // Resolution
-                string videoInfo = fileInfo.Substring(fileInfo.IndexOf("Video:") + 7,
-                    fileInfo.IndexOf(" (default)") - fileInfo.IndexOf("Video:") - 7);
+                string videoInfo = fileInfo.Substring(fileInfo.IndexOf("Video:") + 7);
                 Regex r = new Regex("([0-9]{2,}x[0-9]+)");
                 string resolution = r.Match(videoInfo).Value;
                 int tmpWidth = int.Parse(resolution.Substring(0, resolution.IndexOf('x')));
