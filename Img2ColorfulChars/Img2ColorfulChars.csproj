@@ -70,6 +70,7 @@
     <Compile Include="ScaleBox.Designer.cs">
       <DependentUpon>ScaleBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="VideoConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
