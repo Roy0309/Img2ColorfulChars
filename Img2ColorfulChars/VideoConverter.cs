@@ -100,8 +100,8 @@ namespace Img2ColorfulChars
                 $"-an -vf scale={Width}:{Height} " +
                 $"-r {Rate} -pix_fmt rgb24 " +
                $@"-vcodec rawvideo -f image2pipe \\.\pipe\{pipeName}";
-            p.StartInfo.CreateNoWindow = false;
-            p.StartInfo.UseShellExecute = true;
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.UseShellExecute = false;
             p.EnableRaisingEvents = true;
             p.ErrorDataReceived += (o, e) => { Debug.WriteLine(e.Data); };
             p.Exited += (o, e) => { Debug.WriteLine("Info: FFmpeg exited."); };
