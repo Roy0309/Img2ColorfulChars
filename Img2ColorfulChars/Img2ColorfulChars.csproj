@@ -92,6 +92,9 @@
     <EmbeddedResource Include="ScaleBox.resx">
       <DependentUpon>ScaleBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ScaleBox.zh-CN.resx">
+      <DependentUpon>ScaleBox.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
